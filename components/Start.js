@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Alert, Image } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Platform, Image, KeyboardAvoidingView } from 'react-native';
 
 
 const Start = ({ navigation }) => {
@@ -42,6 +42,8 @@ const Start = ({ navigation }) => {
             />
          
           </View>
+          {Platform.OS === "ios"?
+            (<KeyboardAvoidingView behavior="padding" />): null}
         </ImageBackground>
       </View>
     )
