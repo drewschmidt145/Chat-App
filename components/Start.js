@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+import { ImageBackground, StyleSheet, View, Text, TextInput, Button, TouchableOpacity, Alert, Image } from 'react-native';
 
 
 const Start = ({ navigation }) => {
     const [name, setName] = useState('');
-    const [selectedColor, setSelectedColor] = useState('');
+    const [background, setBackground] = useState('');
     const image = require('../img/BackgroundImage.png');
-    
-    const handleColorSelection = (color) => {
-        setSelectedColor(color);
-    };
+    const icon = require('../img/icon.png');
+    const colors = ['#659DBD', '#DAAD86', '#BC986A', '#FBEEC1'];
 
     return (
         <View style={styles.container}>
@@ -17,6 +15,7 @@ const Start = ({ navigation }) => {
           <Text style={styles.text}>Chat App</Text>
           <View style={styles.containerWhite}>
             <View style={styles.inputContainer}>
+              <Image source={icon} style={styles.icon} />
               <TextInput
                 style={styles.textInput}
                 value={name}
@@ -27,39 +26,17 @@ const Start = ({ navigation }) => {
             </View>
             <Text style={styles.text1}>Choose Background Color:</Text>
             <View style={styles.colorButtonsContainer}>
-            <TouchableOpacity
-                style={[
-                  styles.colorButton,
-                  { backgroundColor: '#090C08', opacity: selectedColor === '#090C08' ? 1 : 0.7 },
-                ]}
-                onPress={() => handleColorSelection('#090C08')}
-              />
-              <TouchableOpacity
-                style={[
-                  styles.colorButton,
-                  { backgroundColor: '#474056', opacity: selectedColor === '#474056' ? 1 : 0.7 },
-                ]}
-                onPress={() => handleColorSelection('#474056')}
-              />
-              <TouchableOpacity
-                style={[
-                  styles.colorButton,
-                  { backgroundColor: '#8A95A5', opacity: selectedColor === '#8A95A5' ? 1 : 0.7 },
-                ]}
-                onPress={() => handleColorSelection('#8A95A5')}
-              />
-              <TouchableOpacity
-                style={[
-                  styles.colorButton,
-                  { backgroundColor: '#B9C6AE', opacity: selectedColor === '#B9C6AE' ? 1 : 0.7 },
-                ]}
-                onPress={() => handleColorSelection('#B9C6AE')}
-              />
-            </View>
-  
+                {colors.map((color, index) => (
+                    <TouchableOpacity
+                        key={index}
+                        style={[styles.colorButton, { backgroundColor: color }, background === color && styles.selected]}
+                        onPress={() => setBackground(color)}
+                    />
+                ))}
+            </View>  
             <Button
               title="Start Chatting"
-              onPress={() => navigation.navigate('Chat', { name: name }, { color: selectedColor })}
+              onPress={() => navigation.navigate('Chat',  { name: name ,  background: background } )}
               style={styles.buttonStartChatting}
               color="#757083"
             />
