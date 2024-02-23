@@ -45,8 +45,8 @@ const Start = ({ navigation }) => {
                 <Text style={styles.buttonText} >Start Chatting</Text>
             </TouchableOpacity>
           </View>
-          {Platform.OS === "ios"?
-            (<KeyboardAvoidingView behavior="padding" />): null}
+          {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" />: null}
+          {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </ImageBackground>
       </View>
     )
