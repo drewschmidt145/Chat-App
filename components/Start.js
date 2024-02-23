@@ -34,13 +34,16 @@ const Start = ({ navigation }) => {
                     />
                 ))}
             </View>  
-            <Button
-              title="Start Chatting"
+            <TouchableOpacity
+              accessible={true}
+              accessibilityLabel="Chat Button"
+              accessibilityHint="Sends you to a chat room to start chatting!"
+              accessibilityRole="button"
               onPress={() => navigation.navigate('Chat',  { name: name ,  background: background } )}
-              style={styles.buttonStartChatting}
-              color="#757083"
-            />
-         
+              style={styles.button}
+            >
+                <Text style={styles.buttonText} >Start Chatting</Text>
+            </TouchableOpacity>
           </View>
           {Platform.OS === "ios"?
             (<KeyboardAvoidingView behavior="padding" />): null}
@@ -120,16 +123,18 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         margin: 10,
     },
-    buttonStartChatting: {
-        backgroundColor: '#757083',
-        borderRadius: 8,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        marginTop: 10,
-    },
     button: {
-        backgroundColor: '#090C08' 
-    }
+        width: '88%',
+        margin: 20,
+        padding: 20,
+        alignItems: 'center',
+        backgroundColor: '#757083',
+      },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#FFFFFF',
+    },
 });
 
 export default Start;
