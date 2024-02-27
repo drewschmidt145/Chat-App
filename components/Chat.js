@@ -1,41 +1,41 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Platform, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, Platform, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { collection, addDoc, onSnapshot, orderBy, query, DocumentSnapshot} from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
     const [ messages, setMessages ] = useState([])
-    const { name, background } = route.params;
+    const { name, background, userID } = route.params;
+
+    let unsubMessages;
+    
+    useEffect(() => {
+      navigation.setOptions({ title: name });
+
+      const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      const unsubMessages = onSnapshot(q, (docs) => {
+        let newMessages = [];
+        docs.forEach(doc => {
+          newMessages.push({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: new Date(doc.data().createdAt.toMillis())
+          })
+        })
+        setMessages(newMessages);
+      })
+      return () => {
+        if (unsubMessages) unsubMessages();
+      }
+    }, []);
+    
     const onSend = (newMessages) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
-    }
-
-    useEffect(() => {
-        setMessages([
-          {
-            _id: 1,
-            text: "Hello, Welcome to the Chat Room!",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: "React Native",
-              avatar: "https://picsum.photos/140/140",
-            },
-          },
-          {
-            _id: 2,
-            text: 'This is a system message',
-            createdAt: new Date(),
-            system: true,
-          },
-        ]);
-    }, []);
-
-    useEffect(() => {
-        navigation.setOptions({ title: name });
-    }, []);
+      addDoc(collection(db, "messages"), newMessages[0]);
+    };
 
     const renderBubble = (props) => {
-        return <Bubble {...props}
+        return <Bubble 
+          {...props}
           wrapperStyle={{
             left: {
               backgroundColor: 'white',
@@ -55,10 +55,10 @@ const Chat = ({ route, navigation }) => {
                 renderBubble={renderBubble}
                 onSend={messages => onSend(messages)}
                 user={{
-                _id: 1
+                  _id: userID,
+                  name: name
                 }}
             />
-            {Platform.OS === "ios" ? <KeyboardAvoidingView behavior="padding" />: null}
             {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     )
