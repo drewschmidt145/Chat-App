@@ -7,11 +7,12 @@ const Chat = ({ route, navigation, db }) => {
     const [ messages, setMessages ] = useState([])
     const { name, background, userID } = route.params;
 
-    let unsubMessages;
     
     useEffect(() => {
+      // uses the name that is enters for navbar
       navigation.setOptions({ title: name });
 
+      // query for collections messages in descending order
       const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
       const unsubMessages = onSnapshot(q, (docs) => {
         let newMessages = [];
@@ -24,15 +25,18 @@ const Chat = ({ route, navigation, db }) => {
         })
         setMessages(newMessages);
       })
+      // clean up code for updated messages
       return () => {
         if (unsubMessages) unsubMessages();
       }
     }, []);
     
+    // function to send new messages to firestore
     const onSend = (newMessages) => {
       addDoc(collection(db, "messages"), newMessages[0]);
     };
 
+    // renders chat bubbles and allows styling,, colors for the bubbles
     const renderBubble = (props) => {
         return <Bubble 
           {...props}

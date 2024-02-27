@@ -10,6 +10,7 @@ const Start = ({ navigation }) => {
     const colors = ['#659DBD', '#DAAD86', '#BC986A', '#FBEEC1'];
     const auth = getAuth();
 
+    // function to sign in the user anonymously
     const signInUser = () => {
       signInAnonymously(auth)
         .then(result => {
@@ -21,6 +22,7 @@ const Start = ({ navigation }) => {
         })
     }
 
+    // render the components and page
     return (
         <View style={styles.container}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
