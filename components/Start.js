@@ -7,7 +7,7 @@ const Start = ({ navigation }) => {
     const [background, setBackground] = useState('');
     const image = require('../img/BackgroundImage.png');
     const icon = require('../img/icon.png');
-    const colors = ['#659DBD', '#DAAD86', '#BC986A', '#FBEEC1'];
+    const colors = ['#090C08', '#474056', '#8A95A5', '#B9C6AE'];
     const auth = getAuth();
 
     // function to sign in the user anonymously
