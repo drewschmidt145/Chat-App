@@ -6,7 +6,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNetInfo } from "@react-native-community/netinfo";
-
+import { getStorage } from "firebase/storage";
 
 // import the screens
 import Start from './components/Start';
@@ -44,6 +44,8 @@ const App = () => {
   // Initialize Cloud Firestore and get a reference to the service
   const db = getFirestore(app);
 
+  const storage = getStorage(app);
+
   return (
     <NavigationContainer styles={styles.container}>
       <Stack.Navigator
@@ -56,7 +58,7 @@ const App = () => {
         <Stack.Screen
           name='Chat'
         >
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <Chat isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
