@@ -8,7 +8,7 @@ This application that uses React Native. Signin to user and puts you into a chat
 
 ## Key Features
 
-### SignIn to User
+### Sign In to User
 
 - Enter a Username for your messages to be labled from
 
